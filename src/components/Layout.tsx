@@ -20,7 +20,15 @@ export function Layout({ children }: LayoutProps) {
 
   const navigation = [
     { name: 'Home', href: '/', icon: Home, roles: ['Nurse', 'Charge Nurse', 'Admin'] },
-    { name: 'Agents', href: '/agents', icon: Users, roles: ['Nurse', 'Charge Nurse', 'Admin'] },
+    {
+      name: 'Agents',
+      icon: Users,
+      roles: ['Nurse', 'Charge Nurse', 'Admin'],
+      children: [
+        { name: 'AI Agents', href: '/agents', icon: Users, roles: ['Nurse', 'Charge Nurse', 'Admin'] },
+        { name: 'Audit Logs', href: '/audit', icon: FileText, roles: ['Charge Nurse', 'Admin'] },
+      ]
+    },
     {
       name: 'Departments',
       icon: Building2,
@@ -32,14 +40,20 @@ export function Layout({ children }: LayoutProps) {
         { name: 'Operating Room (OR)', href: '/departments/or', icon: ScissorsLineDashed },
       ]
     },
-    { name: 'KPIs', href: '/kpis', icon: BarChart3, roles: ['Charge Nurse', 'Admin'] },
-    { name: 'OKRs', href: '/okrs', icon: Target, roles: ['Charge Nurse', 'Admin'] },
+    {
+      name: 'Case Studies',
+      icon: BookOpen,
+      roles: ['Nurse', 'Charge Nurse', 'Admin'],
+      children: [
+        { name: 'Case Study', href: '/case-studies', icon: BookOpen, roles: ['Nurse', 'Charge Nurse', 'Admin'] },
+        { name: 'OKRs', href: '/okrs', icon: Target, roles: ['Charge Nurse', 'Admin'] },
+        { name: 'KPIs', href: '/kpis', icon: BarChart3, roles: ['Charge Nurse', 'Admin'] },
+      ]
+    },
     { name: 'Compliance', href: '/compliance', icon: Shield, roles: ['Charge Nurse', 'Admin'] },
-    { name: 'Audit Logs', href: '/audit', icon: FileText, roles: ['Charge Nurse', 'Admin'] },
     { name: 'BO Schema', href: '/bo-schema', icon: Database, roles: ['Admin'] },
     { name: 'API Docs', href: '/api-docs', icon: Code, roles: ['Admin'] },
     { name: 'ROI', href: '/roi', icon: TrendingUp, roles: ['Admin'] },
-    { name: 'Case Studies', href: '/case-studies', icon: BookOpen, roles: ['Nurse', 'Charge Nurse', 'Admin'] },
     { name: 'Help', href: '/help', icon: HelpCircle, roles: ['Nurse', 'Charge Nurse', 'Admin'] },
     { name: 'Admin', href: '/admin', icon: Settings, roles: ['Admin'] },
   ];
@@ -105,20 +119,22 @@ export function Layout({ children }: LayoutProps) {
                       {item.name}
                     </div>
                     <div className="ml-6 space-y-1">
-                      {item.children.map((child) => (
-                        <Link
-                          key={child.href}
-                          to={child.href}
-                          className={`flex items-center px-3 py-2 text-sm font-medium rounded-md ${
-                            isActive(child.href)
-                              ? 'bg-teal-50 text-teal-700'
-                              : 'text-gray-700 hover:bg-gray-100'
-                          }`}
-                        >
-                          <child.icon size={18} className="mr-3" />
-                          {child.name}
-                        </Link>
-                      ))}
+                      {item.children
+                        .filter((child: any) => !child.roles || child.roles.includes(role))
+                        .map((child) => (
+                          <Link
+                            key={child.href}
+                            to={child.href}
+                            className={`flex items-center px-3 py-2 text-sm font-medium rounded-md ${
+                              isActive(child.href)
+                                ? 'bg-teal-50 text-teal-700'
+                                : 'text-gray-700 hover:bg-gray-100'
+                            }`}
+                          >
+                            <child.icon size={18} className="mr-3" />
+                            {child.name}
+                          </Link>
+                        ))}
                     </div>
                   </>
                 ) : (

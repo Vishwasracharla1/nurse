@@ -7,6 +7,10 @@ import { Modal } from '../../components/ui/Modal';
 import { api } from '../../services/api';
 import { Department, KPI, Task, Agent, AuditEvent } from '../../types';
 import { TrendingUp, TrendingDown, AlertCircle, CheckCircle, Clock, User } from 'lucide-react';
+import VitalsComplianceEChart from '../../components/charts/VitalsComplianceEChart';
+import MedAccuracyEChart from '../../components/charts/MedAccuracyEChart';
+import DischargeBeforeNoonEChart from '../../components/charts/DischargeBeforeNoonEChart';
+import ReadmitRateEChart from '../../components/charts/ReadmitRateEChart';
 
 interface DepartmentPageProps {
   dept: Department;
@@ -73,6 +77,38 @@ export function DepartmentPage({ dept, title, description, quickActions }: Depar
           };
 
           const chartType = getChartType(kpi.name);
+
+          if (kpi.name === 'Vitals Compliance') {
+            return (
+              <div key={kpi.id}>
+                <VitalsComplianceEChart title={kpi.name} target={typeof kpi.target === 'number' ? kpi.target : 95} />
+              </div>
+            );
+          }
+
+          if (kpi.name === 'Med Accuracy (BCMA)') {
+            return (
+              <div key={kpi.id}>
+                <MedAccuracyEChart title={kpi.name} target={typeof kpi.target === 'number' ? kpi.target : 99.5} />
+              </div>
+            );
+          }
+
+          if (kpi.name === 'Discharge Before Noon') {
+            return (
+              <div key={kpi.id}>
+                <DischargeBeforeNoonEChart title={kpi.name} target={typeof kpi.target === 'number' ? kpi.target : 90} />
+              </div>
+            );
+          }
+
+          if (kpi.name === '30-Day Readmit Rate') {
+            return (
+              <div key={kpi.id}>
+                <ReadmitRateEChart title={kpi.name} target={typeof kpi.target === 'number' ? kpi.target : 10} />
+              </div>
+            );
+          }
 
           return (
             <Card key={kpi.id}>
