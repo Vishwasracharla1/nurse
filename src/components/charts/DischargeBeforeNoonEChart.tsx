@@ -74,9 +74,14 @@ export const DischargeBeforeNoonEChart: React.FC<Props> = ({ title = "Discharge 
       series: [
         {
           name: "Actual",
-          type: "bar",
+          type: "line",
           data: y,
+          smooth: true,
+          showSymbol: true,
+          symbolSize: 6,
+          lineStyle: { width: 3, color: "#0d9488" },
           itemStyle: { color: "#0d9488" },
+          areaStyle: { color: "rgba(13, 148, 136, 0.08)" },
           markLine: {
             symbol: "none",
             label: { show: true, formatter: "Target" },
